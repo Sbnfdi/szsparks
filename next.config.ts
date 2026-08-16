@@ -3,6 +3,12 @@ import path from "path";
 
 const nextConfig: NextConfig = {
   outputFileTracingRoot: process.cwd(),
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "10mb",
+    },
+  },
+  turbopack: {},
   images: {
     remotePatterns: [
       {

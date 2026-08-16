@@ -6,6 +6,8 @@ import { requireAuth } from "@/lib/auth";
 import { login as authLogin, logout as authLogout } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import fs from "node:fs/promises";
+import path from "node:path";
 
 // Helper to map DB row to Product interface
 function rowToProduct(row: any): Product {
@@ -19,6 +21,47 @@ function rowToProduct(row: any): Product {
     createdAt: String(row.created_at),
     updatedAt: String(row.updated_at),
   };
+}
+
+async function handleImageUpload(formData: FormData, fallbackUrl?: string): Promise<string | null> {
+  const imageFile = formData.get("imageFile") as File | null;
+  const imageUrlInput = (formData.get("imageUrl") as string | null)?.trim();
+  const existingImageUrl = (formData.get("existingImageUrl") as string | null)?.trim();
+
+  // 1. If a file was uploaded
+  if (imageFile && typeof imageFile === "object" && imageFile.size > 0) {
+    const bytes = await imageFile.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+
+    const ext = path.extname(imageFile.name) || ".jpg";
+    const rawBaseName = path.basename(imageFile.name, ext);
+    const sanitizedBase = rawBaseName.replace(/[^a-zA-Z0-9_-]/g, "_").slice(0, 40) || "product";
+    const fileName = `${sanitizedBase}-${Date.now()}${ext}`;
+
+    const uploadDir = path.join(process.cwd(), "public", "uploads");
+    await fs.mkdir(uploadDir, { recursive: true });
+    const filePath = path.join(uploadDir, fileName);
+    await fs.writeFile(filePath, buffer);
+
+    return `/uploads/${fileName}`;
+  }
+
+  // 2. If a manual image URL / path was provided
+  if (imageUrlInput && imageUrlInput.length > 0) {
+    return imageUrlInput;
+  }
+
+  // 3. If keeping existing image (editing)
+  if (existingImageUrl && existingImageUrl.length > 0) {
+    return existingImageUrl;
+  }
+
+  // 4. Fallback if editing
+  if (fallbackUrl && fallbackUrl.length > 0) {
+    return fallbackUrl;
+  }
+
+  return null;
 }
 
 // ─── Auth Actions ────────────────────────────────────────
@@ -98,18 +141,22 @@ export async function createProduct(
   await requireAuth();
   await initDb();
 
-  const title = formData.get("title") as string;
-  const description = formData.get("description") as string;
+  const title = (formData.get("title") as string)?.trim();
+  const description = (formData.get("description") as string)?.trim();
   const price = parseInt(formData.get("price") as string, 10);
-  const imageUrl = formData.get("imageUrl") as string;
-  const category = formData.get("category") as string;
+  const category = (formData.get("category") as string)?.trim();
 
-  if (!title || !description || !price || !imageUrl || !category) {
-    return { error: "All fields are required" };
+  if (!title || !description || isNaN(price) || !category) {
+    return { error: "Please fill in all required fields." };
   }
 
-  if (isNaN(price) || price <= 0) {
-    return { error: "Price must be a valid positive number" };
+  if (price <= 0) {
+    return { error: "Price must be a valid positive number." };
+  }
+
+  const imageUrl = await handleImageUpload(formData);
+  if (!imageUrl) {
+    return { error: "Please upload an image or provide an image URL." };
   }
 
   try {
@@ -140,14 +187,33 @@ export async function updateProduct(
   await initDb();
 
   const id = parseInt(formData.get("id") as string, 10);
-  const title = formData.get("title") as string;
-  const description = formData.get("description") as string;
+  const title = (formData.get("title") as string)?.trim();
+  const description = (formData.get("description") as string)?.trim();
   const price = parseInt(formData.get("price") as string, 10);
-  const imageUrl = formData.get("imageUrl") as string;
-  const category = formData.get("category") as string;
+  const category = (formData.get("category") as string)?.trim();
 
-  if (!id || !title || !description || !price || !imageUrl || !category) {
-    return { error: "All fields are required" };
+  if (!id || !title || !description || isNaN(price) || !category) {
+    return { error: "Please fill in all required fields." };
+  }
+
+  if (price <= 0) {
+    return { error: "Price must be a valid positive number." };
+  }
+
+  // Fetch current product to fallback to existing image if nothing new provided
+  let fallbackUrl: string | undefined;
+  try {
+    const existing = await getProduct(id);
+    if (existing) {
+      fallbackUrl = existing.imageUrl;
+    }
+  } catch (e) {
+    console.error("Failed to retrieve existing product for fallback image:", e);
+  }
+
+  const imageUrl = await handleImageUpload(formData, fallbackUrl);
+  if (!imageUrl) {
+    return { error: "Please upload an image or provide an image URL." };
   }
 
   try {
