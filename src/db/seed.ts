@@ -2,6 +2,48 @@ import { db, initDb } from "./index";
 
 export const realProducts = [
   {
+    title: "Handmade Glowing Blue Lotus Night Lamp",
+    description: "Enchanting deep royal blue pipe cleaner water lily bloom with warm fairy lights nestled between velvet petals. Creates a serene ambient glow.",
+    price: 1800,
+    imageUrl: "/products/blue-lotus-lamp.jpg",
+    category: "Decorations",
+  },
+  {
+    title: "Illuminated Pink Lily Flower Table Lamp",
+    description: "Stunning handcrafted glowing pink lily with warm LED center lighting, floral stem accents, and a sturdy woven chenille ring stand.",
+    price: 2000,
+    imageUrl: "/products/purple-lily-lamp.jpg",
+    category: "Decorations",
+  },
+  {
+    title: "Purple Pearl Jellyfish Hanging Lamp Decor",
+    description: "Whimsical handmade deep purple & lavender jellyfish with spiral tentacles and luminous pearl beads. Perfect ambient hanging decoration.",
+    price: 1400,
+    imageUrl: "/products/jellyfish-lamp.jpg",
+    category: "Decorations",
+  },
+  {
+    title: "Pearl Blossom Wooden Slice Lamp Decor",
+    description: "Exquisite handmade pipe cleaner flowers with lustrous pearl centers mounted on a natural rustic wood slice. Perfect bedside or table centerpiece.",
+    price: 1600,
+    imageUrl: "/products/rustic-floral-lamp.jpg",
+    category: "Decorations",
+  },
+  {
+    title: "Pastel Floral Wooden Log Arrangement",
+    description: "Lush multi-flower arrangement featuring pastel pink and purple pipe cleaner blossoms with pearl centers on an authentic natural wood log slice.",
+    price: 1500,
+    imageUrl: "/products/floral-wood-arrangement.jpg",
+    category: "Flowers",
+  },
+  {
+    title: "Handmade Velvet Sunflower Stem",
+    description: "Lively handcrafted pipe cleaner sunflower with layers of golden-yellow petals, velvety chocolate center, and flexible green leaves.",
+    price: 600,
+    imageUrl: "/products/single-sunflower.jpg",
+    category: "Flowers",
+  },
+  {
     title: "Handmade Pink Bow Mirror Keychain",
     description: "Charming black & soft pink handmade pipe cleaner mirror keychain with crystal bow accent and gold key ring. Practical, portable, and adorable.",
     price: 500,
@@ -42,34 +84,6 @@ export const realProducts = [
     price: 500,
     imageUrl: "/products/sunflower-mirror-keychain.jpg",
     category: "Key Chains",
-  },
-  {
-    title: "Handmade Velvet Sunflower Stem",
-    description: "Lively handcrafted pipe cleaner sunflower with layers of golden-yellow petals, velvety chocolate center, and flexible green leaves.",
-    price: 600,
-    imageUrl: "/products/single-sunflower.jpg",
-    category: "Flowers",
-  },
-  {
-    title: "Purple Pearl Jellyfish Hanging Lamp Decor",
-    description: "Whimsical handmade deep purple & lavender jellyfish with spiral tentacles and luminous pearl beads. Perfect ambient hanging decoration.",
-    price: 1400,
-    imageUrl: "/products/jellyfish-lamp.jpg",
-    category: "Decorations",
-  },
-  {
-    title: "Pearl Blossom Wooden Slice Lamp Decor",
-    description: "Exquisite handmade pipe cleaner flowers with lustrous pearl centers mounted on a natural rustic wood slice. Perfect bedside or table centerpiece.",
-    price: 1600,
-    imageUrl: "/products/rustic-floral-lamp.jpg",
-    category: "Decorations",
-  },
-  {
-    title: "Pastel Floral Wooden Log Arrangement",
-    description: "Lush multi-flower arrangement featuring pastel pink and purple pipe cleaner blossoms with pearl centers on an authentic natural wood log slice.",
-    price: 1500,
-    imageUrl: "/products/floral-wood-arrangement.jpg",
-    category: "Flowers",
   },
 ];
 
