@@ -12,9 +12,9 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   return (
-    <div className="group bg-surface rounded-2xl overflow-hidden border border-border-light card-hover shadow-sm">
+    <div className="group bg-white rounded-3xl overflow-hidden border border-[#E2D6C6] card-hover shadow-sm hover:shadow-xl transition-all duration-300">
       {/* Image Container */}
-      <div className="relative aspect-square overflow-hidden bg-warm-cream">
+      <div className="relative aspect-square overflow-hidden bg-[#F3ECE0]">
         <Image
           src={product.imageUrl}
           alt={product.title}
@@ -24,38 +24,41 @@ export default function ProductCard({ product }: ProductCardProps) {
         />
 
         {/* Category Badge */}
-        <div className="absolute top-3 left-3 z-10">
-          <span className="px-3 py-1 text-xs font-semibold rounded-full bg-white/90 text-primary-dark backdrop-blur-sm border border-white/50 shadow-sm">
+        <div className="absolute top-3.5 left-3.5 z-10">
+          <span className="px-3 py-1 text-xs font-bold rounded-full bg-white/95 text-[#2D4B3E] border border-[#E2D6C6] shadow-sm">
             {product.category}
           </span>
         </div>
 
         {/* Hover Overlay */}
-        <div className="absolute inset-0 bg-primary-dark/0 group-hover:bg-primary-dark/20 transition-all duration-500 flex items-center justify-center">
-          <div className="opacity-0 group-hover:opacity-100 transform scale-75 group-hover:scale-100 transition-all duration-300">
-            <div className="w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-lg">
-              <Eye size={20} className="text-primary-dark" />
+        <div className="absolute inset-0 bg-[#182B23]/0 group-hover:bg-[#182B23]/25 transition-all duration-300 flex items-center justify-center">
+          <div className="opacity-0 group-hover:opacity-100 transform scale-75 group-hover:scale-100 transition-all duration-200">
+            <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-lg">
+              <Eye size={20} className="text-[#2D4B3E]" />
             </div>
           </div>
         </div>
       </div>
 
       {/* Content */}
-      <div className="p-5">
+      <div className="p-5 sm:p-6">
         {/* Title */}
-        <h3 className="font-heading text-lg font-semibold text-text-primary group-hover:text-primary transition-colors duration-300 line-clamp-1">
+        <h3 className="font-heading text-lg sm:text-xl font-bold text-[#241C18] group-hover:text-[#2D4B3E] transition-colors duration-200 line-clamp-1">
           {product.title}
         </h3>
 
         {/* Description */}
-        <p className="mt-1.5 text-sm text-text-muted line-clamp-2 leading-relaxed">
+        <p className="mt-2 text-sm text-[#584A42] line-clamp-2 leading-relaxed font-normal">
           {product.description}
         </p>
 
-        {/* Price & Action */}
-        <div className="mt-4 flex items-center justify-between gap-3">
+        {/* Price & WhatsApp Action */}
+        <div className="mt-5 pt-4 border-t border-[#E2D6C6]/60 flex items-center justify-between gap-3">
           <div>
-            <p className="text-xl font-bold text-primary font-heading">
+            <span className="text-[11px] uppercase tracking-wider text-[#8A7B73] block font-semibold">
+              Price
+            </span>
+            <p className="text-xl font-bold text-[#2D4B3E] font-heading">
               {formatPrice(product.price)}
             </p>
           </div>

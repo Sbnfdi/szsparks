@@ -10,53 +10,40 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="pt-28 pb-20">
+    <div className="pt-32 pb-24 bg-[#FAF6F0] min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Page Header */}
-        <div className="text-center mb-16">
-          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
-            <Sparkles size={14} />
+        <div className="text-center mb-14">
+          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#2D4B3E]/10 text-[#2D4B3E] text-xs sm:text-sm font-bold mb-3">
+            <Sparkles size={14} className="text-[#8D493A]" />
             Our Story
           </span>
-          <h1 className="font-heading text-4xl sm:text-5xl font-bold text-text-primary mb-4">
-            About <span className="text-gradient">SZ Sparks</span>
+          <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl font-bold text-[#241C18] mb-4">
+            About <span className="text-[#8D493A]">SZ Sparks</span>
           </h1>
-          <p className="text-text-muted max-w-xl mx-auto">
-            Where creativity meets craftsmanship — one pipe cleaner at a time.
+          <p className="text-[#584A42] max-w-xl mx-auto text-base sm:text-lg">
+            Where imagination meets craftsmanship — one handcrafted stem at a time.
           </p>
         </div>
 
         {/* Story Section */}
         <div className="max-w-4xl mx-auto mb-20">
-          <div className="relative p-8 sm:p-12 bg-surface rounded-3xl border border-border-light shadow-sm">
-            {/* Decorative Corner */}
-            <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-accent/10 to-transparent rounded-3xl" />
-            <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-primary/5 to-transparent rounded-3xl" />
-
-            <div className="relative space-y-6 text-text-secondary leading-relaxed">
-              <p className="text-lg">
-                <span className="font-heading text-4xl text-primary float-left mr-3 mt-1 leading-none">
+          <div className="relative p-8 sm:p-12 bg-white rounded-3xl border border-[#E2D6C6] shadow-sm">
+            <div className="relative space-y-6 text-[#584A42] text-base sm:text-lg leading-relaxed">
+              <p>
+                <span className="font-heading text-5xl text-[#2D4B3E] float-left mr-3 mt-1 leading-none font-bold">
                   S
                 </span>
-                Z Sparks was born from a simple love for creating beautiful things with
-                humble materials. What started as a hobby — twisting colorful pipe cleaners
-                into delicate flowers and quirky characters — quickly blossomed into a
-                passion for handmade artistry.
+                Z Sparks was born from a genuine love for turning humble craft materials into captivating art. What started as a creative hobby — hand-twisting soft pipe cleaners into delicate flower petals and playful characters — quickly blossomed into a dedicated handmade brand.
               </p>
               <p>
-                Based in Pakistan, we believe that the most meaningful gifts and decorations
-                are those made by hand, with care, attention to detail, and a whole lot of
-                love. Every pipe cleaner creation from SZ Sparks is a tiny sculpture —
-                vibrant, unique, and crafted to bring a smile to your face.
+                Based in Pakistan, we believe that the most treasured gifts are those made by human hands with care, precision, and passion. Every single pipe cleaner creation from SZ Sparks is an individual piece of sculpture — vibrant, unique, and crafted to bring joy.
               </p>
               <p>
-                From intricate flower bouquets that never wilt, to adorable animal
-                figurines and fun characters that make perfect desk companions — our
-                creations are designed to add warmth and color to your world.
+                From intricate flower bouquets that stay in bloom forever, to desk companion figurines and personalized festive gifts — our creations bring warmth and color to everyday spaces.
               </p>
-              <p className="font-medium text-text-primary">
-                We don&apos;t just make crafts. We create little sparks of joy.
-                ✨
+              <p className="font-bold text-[#241C18] text-lg sm:text-xl pt-2">
+                We don&apos;t just make crafts. We spark joy through handmade art. ✨
               </p>
             </div>
           </div>
@@ -64,47 +51,47 @@ export default function AboutPage() {
 
         {/* Values */}
         <div className="mb-20">
-          <h2 className="font-heading text-3xl font-bold text-center text-text-primary mb-12">
-            What Sets Us <span className="text-gradient">Apart</span>
+          <h2 className="font-heading text-3xl sm:text-4xl font-bold text-center text-[#241C18] mb-12">
+            What Sets Us <span className="text-[#8D493A]">Apart</span>
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
               {
-                icon: <Scissors className="text-primary" size={24} />,
+                icon: <Scissors className="text-[#2D4B3E]" size={24} />,
                 title: "100% Handmade",
                 description:
-                  "Every single piece is crafted entirely by hand — no machines, no shortcuts, just pure skill.",
+                  "Every piece is crafted entirely by hand — no shortcuts, just authentic artisan dedication.",
               },
               {
-                icon: <Star className="text-secondary" size={24} />,
-                title: "Premium Quality",
+                icon: <Star className="text-[#8D493A]" size={24} />,
+                title: "Premium Materials",
                 description:
-                  "We use only the best pipe cleaners and materials for vibrant colors that last.",
+                  "We use high-density, velvety soft chenille pipe cleaners for vivid colors that last indefinitely.",
               },
               {
-                icon: <Heart className="text-accent-dark" size={24} />,
+                icon: <Heart className="text-[#B87B8E]" size={24} />,
                 title: "Made with Love",
                 description:
-                  "Each creation carries the warmth and passion of its maker. That's the SZ Sparks difference.",
+                  "Each creation carries the warmth and affection of handmade artistry. Perfect for gifting.",
               },
               {
-                icon: <Award className="text-primary-light" size={24} />,
-                title: "Unique Designs",
+                icon: <Award className="text-[#C5A880]" size={24} />,
+                title: "Unique Pieces",
                 description:
-                  "No two pieces are exactly alike. Your creation is as unique as you are.",
+                  "Because each creation is handcrafted, every item is wonderfully unique and special.",
               },
             ].map((value) => (
               <div
                 key={value.title}
-                className="p-6 rounded-2xl bg-surface border border-border-light card-hover text-center"
+                className="p-7 rounded-3xl bg-white border border-[#E2D6C6] text-center shadow-sm hover:shadow-md hover:border-[#8D493A]/40 transition-all duration-300"
               >
-                <div className="w-12 h-12 rounded-xl bg-warm-cream flex items-center justify-center mx-auto mb-4">
+                <div className="w-13 h-13 rounded-2xl bg-[#F3ECE0] flex items-center justify-center mx-auto mb-4 border border-[#E2D6C6]">
                   {value.icon}
                 </div>
-                <h3 className="font-heading text-base font-semibold text-text-primary mb-2">
+                <h3 className="font-heading text-lg font-bold text-[#241C18] mb-2">
                   {value.title}
                 </h3>
-                <p className="text-sm text-text-muted leading-relaxed">
+                <p className="text-sm text-[#584A42] leading-relaxed">
                   {value.description}
                 </p>
               </div>
@@ -114,17 +101,16 @@ export default function AboutPage() {
 
         {/* CTA */}
         <div className="text-center">
-          <div className="inline-block p-8 sm:p-12 rounded-3xl bg-warm-cream border border-border-light">
-            <h3 className="font-heading text-2xl font-bold text-text-primary mb-3">
+          <div className="inline-block p-10 sm:p-14 rounded-3xl bg-[#F3ECE0] border border-[#E2D6C6] max-w-lg shadow-sm">
+            <h3 className="font-heading text-2xl sm:text-3xl font-bold text-[#241C18] mb-3">
               Ready to explore?
             </h3>
-            <p className="text-text-muted mb-6 max-w-md">
-              Browse our collection and find the perfect handmade creation for
-              yourself or someone special.
+            <p className="text-[#584A42] mb-6 text-base">
+              Browse our collection and find the perfect handmade piece for yourself or your loved ones.
             </p>
             <Link
               href="/shop"
-              className="inline-flex items-center gap-2 px-8 py-3.5 btn-primary rounded-full text-base font-semibold"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-[#2D4B3E] hover:bg-[#3E6353] text-white rounded-full text-base font-bold shadow-lg shadow-[#2D4B3E]/20 transition-all hover:scale-105"
             >
               <Sparkles size={16} />
               Visit Shop
