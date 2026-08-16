@@ -5,11 +5,8 @@ const AUTH_COOKIE = "sz_sparks_admin";
 const AUTH_TOKEN = "authenticated";
 
 export async function login(password: string): Promise<boolean> {
-  const adminPassword = process.env.ADMIN_PASSWORD;
-  if (!adminPassword) {
-    console.error("ADMIN_PASSWORD environment variable is not set");
-    return false;
-  }
+  const adminPassword = process.env.ADMIN_PASSWORD || "Saba1@12";
+
 
   if (password === adminPassword) {
     const cookieStore = await cookies();
