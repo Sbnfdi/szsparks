@@ -28,22 +28,16 @@ async function handleImageUpload(formData: FormData, fallbackUrl?: string): Prom
   const imageUrlInput = (formData.get("imageUrl") as string | null)?.trim();
   const existingImageUrl = (formData.get("existingImageUrl") as string | null)?.trim();
 
-  // 1. If a file was uploaded
+  // 1. If a file was uploaded, convert directly to Base64 data URL
+  // This avoids read-only filesystem errors (EROFS) in serverless environments like Vercel
   if (imageFile && typeof imageFile === "object" && imageFile.size > 0) {
+    if (imageFile.size > 5 * 1024 * 1024) {
+      throw new Error("Image size must be less than 5MB.");
+    }
     const bytes = await imageFile.arrayBuffer();
     const buffer = Buffer.from(bytes);
-
-    const ext = path.extname(imageFile.name) || ".jpg";
-    const rawBaseName = path.basename(imageFile.name, ext);
-    const sanitizedBase = rawBaseName.replace(/[^a-zA-Z0-9_-]/g, "_").slice(0, 40) || "product";
-    const fileName = `${sanitizedBase}-${Date.now()}${ext}`;
-
-    const uploadDir = path.join(process.cwd(), "public", "uploads");
-    await fs.mkdir(uploadDir, { recursive: true });
-    const filePath = path.join(uploadDir, fileName);
-    await fs.writeFile(filePath, buffer);
-
-    return `/uploads/${fileName}`;
+    const mimeType = imageFile.type || "image/jpeg";
+    return `data:${mimeType};base64,${buffer.toString("base64")}`;
   }
 
   // 2. If a manual image URL / path was provided
@@ -138,28 +132,28 @@ export async function createProduct(
   _prevState: { error?: string; success?: boolean } | null,
   formData: FormData
 ) {
-  await requireAuth();
-  await initDb();
-
-  const title = (formData.get("title") as string)?.trim();
-  const description = (formData.get("description") as string)?.trim();
-  const price = parseInt(formData.get("price") as string, 10);
-  const category = (formData.get("category") as string)?.trim();
-
-  if (!title || !description || isNaN(price) || !category) {
-    return { error: "Please fill in all required fields." };
-  }
-
-  if (price <= 0) {
-    return { error: "Price must be a valid positive number." };
-  }
-
-  const imageUrl = await handleImageUpload(formData);
-  if (!imageUrl) {
-    return { error: "Please upload an image or provide an image URL." };
-  }
-
   try {
+    await requireAuth();
+    await initDb();
+
+    const title = (formData.get("title") as string)?.trim();
+    const description = (formData.get("description") as string)?.trim();
+    const price = parseInt(formData.get("price") as string, 10);
+    const category = (formData.get("category") as string)?.trim();
+
+    if (!title || !description || isNaN(price) || !category) {
+      return { error: "Please fill in all required fields." };
+    }
+
+    if (price <= 0) {
+      return { error: "Price must be a valid positive number." };
+    }
+
+    const imageUrl = await handleImageUpload(formData);
+    if (!imageUrl) {
+      return { error: "Please upload an image or provide an image URL." };
+    }
+
     const now = new Date().toISOString();
     await db.execute({
       sql: `
@@ -175,7 +169,9 @@ export async function createProduct(
     return { success: true };
   } catch (error) {
     console.error("Failed to create product:", error);
-    return { error: "Failed to create product. Please try again." };
+    return {
+      error: error instanceof Error ? error.message : "Failed to create product. Please check database connection.",
+    };
   }
 }
 
@@ -183,40 +179,40 @@ export async function updateProduct(
   _prevState: { error?: string; success?: boolean } | null,
   formData: FormData
 ) {
-  await requireAuth();
-  await initDb();
-
-  const id = parseInt(formData.get("id") as string, 10);
-  const title = (formData.get("title") as string)?.trim();
-  const description = (formData.get("description") as string)?.trim();
-  const price = parseInt(formData.get("price") as string, 10);
-  const category = (formData.get("category") as string)?.trim();
-
-  if (!id || !title || !description || isNaN(price) || !category) {
-    return { error: "Please fill in all required fields." };
-  }
-
-  if (price <= 0) {
-    return { error: "Price must be a valid positive number." };
-  }
-
-  // Fetch current product to fallback to existing image if nothing new provided
-  let fallbackUrl: string | undefined;
   try {
-    const existing = await getProduct(id);
-    if (existing) {
-      fallbackUrl = existing.imageUrl;
+    await requireAuth();
+    await initDb();
+
+    const id = parseInt(formData.get("id") as string, 10);
+    const title = (formData.get("title") as string)?.trim();
+    const description = (formData.get("description") as string)?.trim();
+    const price = parseInt(formData.get("price") as string, 10);
+    const category = (formData.get("category") as string)?.trim();
+
+    if (!id || !title || !description || isNaN(price) || !category) {
+      return { error: "Please fill in all required fields." };
     }
-  } catch (e) {
-    console.error("Failed to retrieve existing product for fallback image:", e);
-  }
 
-  const imageUrl = await handleImageUpload(formData, fallbackUrl);
-  if (!imageUrl) {
-    return { error: "Please upload an image or provide an image URL." };
-  }
+    if (price <= 0) {
+      return { error: "Price must be a valid positive number." };
+    }
 
-  try {
+    // Fetch current product to fallback to existing image if nothing new provided
+    let fallbackUrl: string | undefined;
+    try {
+      const existing = await getProduct(id);
+      if (existing) {
+        fallbackUrl = existing.imageUrl;
+      }
+    } catch (e) {
+      console.error("Failed to retrieve existing product for fallback image:", e);
+    }
+
+    const imageUrl = await handleImageUpload(formData, fallbackUrl);
+    if (!imageUrl) {
+      return { error: "Please upload an image or provide an image URL." };
+    }
+
     const now = new Date().toISOString();
     await db.execute({
       sql: `
@@ -233,7 +229,9 @@ export async function updateProduct(
     return { success: true };
   } catch (error) {
     console.error("Failed to update product:", error);
-    return { error: "Failed to update product. Please try again." };
+    return {
+      error: error instanceof Error ? error.message : "Failed to update product. Please check database connection.",
+    };
   }
 }
 

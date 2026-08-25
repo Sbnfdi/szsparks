@@ -19,6 +19,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           src={product.imageUrl}
           alt={product.title}
           fill
+          unoptimized={product.imageUrl.startsWith("data:")}
           className="object-cover img-hover"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
